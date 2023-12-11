@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+    <item
+        android:id="@+id/navigation_discover"
+        android:icon="@drawable/discover"
+        android:title="Discover" />
+    <item
+        android:id="@+id/navigation_drivethru"
+        android:icon="@drawable/car"
+        android:title="Drivethru" />
+    <item
+        android:id="@+id/navigation_orders"
+        android:icon="@drawable/orders"
+        android:title="Orders" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/profile"
+        android:title="Profile" />
+</menu>
