@@ -48,7 +48,6 @@ public class AddAddressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
 
-        // Initialize views
         webView = findViewById(R.id.webView);
         addressInput = findViewById(R.id.addressInput);
         rueInput = findViewById(R.id.rueInput);
@@ -78,22 +77,19 @@ public class AddAddressActivity extends AppCompatActivity {
                 userViewModel.addAddress(userId, newAddress);
                 Toast.makeText(AddAddressActivity.this, "Address saved", Toast.LENGTH_SHORT).show();
 
-                // Redirect to MyAddressActivity
                 startActivity(new Intent(AddAddressActivity.this, MyAddressActivity.class));
                 finish();
             }
         });
 
-        // Check if all fields are filled every time the text changes
+        // Checkina idha el fields m3ebin fi kol changement mtaa text
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // No action needed here
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // No action needed here
             }
 
             @Override
@@ -106,7 +102,7 @@ public class AddAddressActivity extends AppCompatActivity {
         rueInput.addTextChangedListener(textWatcher);
         codePostalInput.addTextChangedListener(textWatcher);
 
-        // Get the current location
+        // set location lel position mtaana
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
@@ -135,12 +131,12 @@ public class AddAddressActivity extends AppCompatActivity {
                 }
             });
         } catch (SecurityException e) {
-            // The permissions were revoked by the user. Handle this case as you need.
             e.printStackTrace();
         }
     }
 
     private void updateAddressInput(double latitude, double longitude) {
+        //geaocoder hiya class ndeterminiw minha logitude w latitude fi adresse physiqye
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
             List<android.location.Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);

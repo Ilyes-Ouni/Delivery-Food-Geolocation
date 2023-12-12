@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -65,12 +66,16 @@ public class DiscoverActivity extends AppCompatActivity implements LocationListe
         restaurantViewModel.getRestaurants().observe(this, new Observer<List<Restaurant>>() {
             @Override
             public void onChanged(List<Restaurant> restaurants) {
-                // Convert the list of restaurants to JSON
                 Gson gson = new Gson();
                 String json = gson.toJson(restaurants);
                 Log.e("JSON", json);
-                // Pass the JSON to the JavaScript function in backup.html
-                webView.evaluateJavascript("javascript:setRestaurants('" + json + "')", null);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        webView.evaluateJavascript("javascript:setRestaurants('" + json + "')", null);
+                    }
+                }, 500);
             }
         });
 
@@ -97,7 +102,7 @@ public class DiscoverActivity extends AppCompatActivity implements LocationListe
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
                 } else if (itemId == R.id.navigation_profile) {
-                    startActivity(new Intent(DiscoverActivity.this, HomeActivity.class));
+                    startActivity(new Intent(DiscoverActivity.this, ProfileActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
                 }
@@ -127,7 +132,6 @@ public class DiscoverActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        // Handle status changes if needed
     }
 
     @Override
@@ -137,7 +141,6 @@ public class DiscoverActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onProviderDisabled(String provider) {
-        // Handle provider disabled if needed
     }
 
     private void getLocation() {
@@ -146,13 +149,11 @@ public class DiscoverActivity extends AppCompatActivity implements LocationListe
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             if (lastKnownLocation != null) {
-                // Handle the last known location
                 handleLocation(lastKnownLocation);
             } else {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
             }
 
-            // Do not load the HTML and pass location here
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -160,22 +161,18 @@ public class DiscoverActivity extends AppCompatActivity implements LocationListe
 
     private void handleLocation(Location location) {
         try {
-            // Your existing location handling code...
             addressHolder.setLatitude(location.getLatitude());
             addressHolder.setLongitude(location.getLongitude());
-            // Move these lines here after the location is obtained
             WebView webView = findViewById(R.id.webView);
             webView.getSettings().setDomStorageEnabled(true);
             webView.addJavascriptInterface(new WebAppInterface(this, addressHolder) {
                 @JavascriptInterface
                 @Override
                 public void onMarkerClick(String discoveryName) {
-                    // Call the onMarkerClick method in DiscoverActivity
                     DiscoverActivity.this.onMarkerClick(discoveryName);
                 }
             }, "Android");
 
-            // Pass the current location to the WebView
             if (location != null) {
                 webView.evaluateJavascript("initializeMap(" + location.getLatitude() + ", " + location.getLongitude() + ")", null);
             }
@@ -191,7 +188,6 @@ public class DiscoverActivity extends AppCompatActivity implements LocationListe
 
     @JavascriptInterface
     public void onMarkerClick(final String discoveryID) {
-        // Run UI-related code on the main thread using a Handler
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -202,22 +198,18 @@ public class DiscoverActivity extends AppCompatActivity implements LocationListe
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // Handle OK button click if needed
                                 dialog.dismiss();
 
-                                // Start a new activity with animation
                                 Intent intent = new Intent(DiscoverActivity.this, RestaurantActivity.class);
                                 intent.putExtra("DISCOVERY_ID", discoveryID);
                                 startActivity(intent);
 
-                                // Apply custom animation
                                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // Handle Cancel button click if needed
                                 dialog.dismiss();
                             }
                         })

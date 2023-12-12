@@ -47,16 +47,14 @@ public class SignUpActivity extends AppCompatActivity {
 
                 User user = new User(null, name, email, phoneNumber, password);
 
-                // Register the user
+
                 userViewModel.registerUser(user).observe(SignUpActivity.this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
                         if (user != null) {
-                            // Redirect to the login activity
                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                             finish();
                         } else {
-                            // Show an error message
                             Toast.makeText(SignUpActivity.this, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
 
                         }

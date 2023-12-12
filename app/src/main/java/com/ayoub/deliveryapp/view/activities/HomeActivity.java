@@ -54,10 +54,6 @@ public class HomeActivity extends AppCompatActivity implements CategoryAdapter.O
                     startActivity(new Intent(HomeActivity.this, DiscoverActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
-                } else if (itemId == R.id.navigation_drivethru) {
-
-                } else if (itemId == R.id.navigation_orders) {
-
                 } else if (itemId == R.id.navigation_profile) {
                     startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                     overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);

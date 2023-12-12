@@ -39,7 +39,6 @@ public class LoginActivity extends AppCompatActivity {
         sharedPrefManager = new SharedPrefManager(this);
 
         if (sharedPrefManager.isLoggedIn()) {
-            // Redirect to the main activity
             startActivity(new Intent(this, HomeActivity.class));
             finish();
         }
@@ -47,26 +46,20 @@ public class LoginActivity extends AppCompatActivity {
         loginSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get the email and password from the EditTexts
                 String email = ((EditText) findViewById(R.id.emailInput)).getText().toString();
                 String password = ((EditText) findViewById(R.id.passwordInput)).getText().toString();
 
-                // Login the user
                 userViewModel.loginUser(email, password).observe(LoginActivity.this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
                         if (user != null) {
-                            // Save the user data in the shared preferences
                             sharedPrefManager.saveUser(user);
 
 
-                            // Set the onboarding completion status to true
                             sharedPrefManager.saveOnboardingComplete(true);
-                            // Redirect to the main activity
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             finish();
                         } else {
-                            // Show an error message
                             Toast.makeText(LoginActivity.this, "Authentification failed. Please try again.", Toast.LENGTH_SHORT).show();
 
                         }

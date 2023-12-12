@@ -8,29 +8,15 @@
     <!-- Include Leaflet CSS and JavaScript -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script type="text/javascript">
+</head>
+<body>
+
+<!-- Create a div with a specific id for the map -->
+<div id="map" style="height: 100vh;"></div>
+
+<script type="text/javascript">
     // Declare the map variable globally
     var map;
-
-    function setRestaurants(json) {
-        var restaurants = JSON.parse(json);
-        restaurants.forEach(function (restaurant) {
-            var customIcon = L.icon({
-                iconUrl: restaurant.icon, // Assuming the restaurant object has an 'icon' property
-                iconSize: [50, 50],
-                iconAnchor: [25, 50],
-            });
-
-            var marker = L.marker([restaurant.latitude, restaurant.longitude], { icon: customIcon }).addTo(map)
-                .bindPopup(restaurant.name); // Customize the popup content as needed
-
-            // Add a custom click event for each marker
-            marker.on('click', function (e) {
-                // Call the globally defined onMarkerClick function
-                onMarkerClick(restaurant.id);
-            });
-        });
-    }
 
     // Define onMarkerClick function globally
     function onMarkerClick(restaurantName) {
@@ -60,14 +46,32 @@
             .openPopup();
     });
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-</script>
-</head>
-<body>
+    // Define setRestaurants function globally
+    function setRestaurants(json) {
+        var restaurants = JSON.parse(json);
+        restaurants.forEach(function (restaurant) {
+            var customIcon = L.icon({
+                iconUrl: restaurant.icon, // Assuming the restaurant object has an 'icon' property
+                iconSize: [50, 50],
+                iconAnchor: [25, 50],
+            });
 
-<!-- Create a div with a specific id for the map -->
-<div id="map" style="height: 100vh;"></div>
+            var marker = L.marker([restaurant.latitude, restaurant.longitude], { icon: customIcon }).addTo(map)
+                .bindPopup(restaurant.name); // Customize the popup content as needed
+
+            // Add a custom click event for each marker
+            marker.on('click', function (e) {
+                // Call the globally defined onMarkerClick function
+                onMarkerClick(restaurant.name);
+            });
+        });
+    }
+
+    // Call setRestaurants if Android interface is available
+    if (window.Android && typeof window.Android.getRestaurants === 'function') {
+        window.Android.getRestaurants();
+    }
+</script>
+
 </body>
 </html>

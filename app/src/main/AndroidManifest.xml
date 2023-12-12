@@ -48,7 +48,7 @@
             android:name=".view.activities.OnBoarding2Activity"
             android:exported="false" />
         <activity
-            android:name=".view.activities.OnBoarding1Activity"
+            android:name=".view.activities.DiscoverActivity"
             android:exported="false" />
         <activity
             android:name=".view.activities.RestaurantActivity"
@@ -60,7 +60,7 @@
             android:name=".view.activities.MyOrdersActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activities.DiscoverActivity"
+            android:name=".view.activities.OnBoarding1Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

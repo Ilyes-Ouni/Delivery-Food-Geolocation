@@ -66,12 +66,8 @@ public class ProfileActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
                     return true;
                 } else if (itemId == R.id.navigation_discover) {
-
-                } else if (itemId == R.id.navigation_drivethru) {
-
-                } else if (itemId == R.id.navigation_orders) {
-
-                } else if (itemId == R.id.navigation_profile) {
+                    startActivity(new Intent(ProfileActivity.this, DiscoverActivity.class));
+                    overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
                     return true;
                 }
                 return false;
